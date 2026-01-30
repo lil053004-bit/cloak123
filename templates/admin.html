@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>管理后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            width: 15%;
+        }
+        .content {
+            padding: 20px;
+            width: 85%;
+        }
+        .sidebar h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background-color: #495057;
+        }
+        .sidebar ul li a.active {
+            background-color: #007bff;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+        .form-inline {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧菜单 -->
+            <nav class="sidebar">
+                <h2>管理后台</h2>
+                <ul>
+                    <li><a href="#" onclick="showSection('link-management')">分流链接管理</a></li>
+                    <li><a href="#" onclick="showSection('api-logs')">API 调用记录</a></li>
+                    <li><a href="/logout" class="text-danger">退出登录</a></li>
+                </ul>
+            </nav>
+            
+            <!-- 右侧内容 -->
+            <main class="content">
+                <!-- 分流链接管理 -->
+                <div id="link-management" class="content-section active">
+                    <h1 class="mb-4">分流链接管理</h1>
+                    
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">创建新链接</div>
+                        <div class="card-body">
+                            <form method="post" action="/admin/create">
+                                <div class="mb-3">
+                                    <label for="redirectUrl" class="form-label">跳转链接</label>
+                                    <input type="text" class="form-control" id="redirectUrl" name="redirectUrl" 
+                                           placeholder="https://example.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">用户名</label>
+                                    <input type="text" class="form-control" id="userName" name="userName" 
+                                           placeholder="用户名" required minlength="2">
+                                </div>
+                                <button type="submit" class="btn btn-primary">创建</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <h2>现有链接</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>标识ID</th>
+                                <th>跳转链接</th>
+                                <th>用户名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in data_store %}
+                            <tr>
+                                <td>{{ item.clickId }}</td>
+                                <td>{{ item.redirectUrl }}</td>
+                                <td>{{ item.userName }}</td>
+                                <td>
+                                    <form method="post" action="/admin/update" class="form-inline">
+                                        <input type="hidden" name="clickId" value="{{ item.clickId }}">
+                                        <input type="text" name="redirectUrl" value="{{ item.redirectUrl }}" 
+                                               class="form-control form-control-sm" required>
+                                        <input type="text" name="userName" value="{{ item.userName }}" 
+                                               class="form-control form-control-sm" required minlength="2">
+                                        <button type="submit" class="btn btn-sm btn-success">更新</button>
+                                    </form>
+                                    <form method="post" action="/admin/delete" class="form-inline">
+                                        <input type="hidden" name="clickId" value="{{ item.clickId }}">
+                                        <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- API 调用记录 -->
+                <div id="api-logs" class="content-section">
+                    <h1 class="mb-4">API 调用记录</h1>
+
+                    <!-- 筛选功能 -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="filterEndpoint" class="form-label">筛选接口:</label>
+                            <select id="filterEndpoint" class="form-select" onchange="filterLogs()">
+                                <option value="/api/tokenId" {% if filter_endpoint == '/api/tokenId' %}selected{% endif %}>/api/tokenId</option>
+                                <option value="/api/endurl" {% if filter_endpoint == '/api/endurl' %}selected{% endif %}>/api/endurl</option>
+                                <option value="/api/stock" {% if filter_endpoint == '/api/stock' %}selected{% endif %}>/api/stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- API 调用记录表格 -->
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Endpoint</th>
+                                    <th>IP Address</th>
+                                    <th>Status Code</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in api_logs %}
+                                <tr>
+                                    <td>{{ log.id }}</td>
+                                    <td>{{ log.endpoint }}</td>
+                                    <td>{{ log.ip_address }}</td>
+                                    <td>{{ log.status_code }}</td>
+                                    <td>{{ log.timestamp }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页按钮 -->
+                    {% if total_pages > 1 %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% for page_num in range(1, total_pages + 1) %}
+                            <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                <a class="page-link" 
+                                   href="/admin?page={{ page_num }}&filter_endpoint={{ filter_endpoint }}&active_section=api-logs">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSection(sectionId) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('active_section', sectionId);
+            window.history.pushState({}, '', url);
+            
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar ul li a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.sidebar ul li a[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        function filterLogs() {
+            const filterEndpoint = document.getElementById('filterEndpoint').value;
+            const url = new URL(window.location.href);
+            url.searchParams.set('filter_endpoint', filterEndpoint);
+            url.searchParams.set('active_section', 'api-logs');
+            window.location.href = url.toString();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeSection = urlParams.get('active_section') || 'link-management';
+            showSection(activeSection);
+        });
+    </script>
+</body>
+</html>

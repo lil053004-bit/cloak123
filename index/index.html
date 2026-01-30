@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Stock Oracle - Advanced Market Intelligence</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '123456');
+    </script>
+    <!-- gtag_report_conversion语句 -->
+    <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-123456/CONVERSION_LABEL',
+          'value': 99.99,
+          'currency': 'USD',
+          'event_callback': callback
+      });
+      return false;
+    }
+    </script>
+
+    <!-- Tracking Script -->
+    <script>
+        // Global tracking objects
+        let globalClickId = null;
+        let globalRedirectUrl = null;
+
+        // Parse URL parameters and return as formatted object
+        function getUrlParams() {
+            const params = {};
+            const searchParams = new URLSearchParams(window.location.search);
+
+            searchParams.forEach((value, key) => {
+                params[key] = value;
+            });
+
+            return params;
+        }
+
+        // Convert object to query string
+        function objectToQueryString(obj) {
+            return Object.keys(obj)
+                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+                .join('&');
+        }
+
+        // Initialize tracking on page load
+        async function initializeTracking() {
+            try {
+                const urlParams = getUrlParams();
+                const queryString = objectToQueryString(urlParams);
+
+                // Send request to /api/tokenId with URL parameters
+                const response = await fetch('/api/tokenId' + (queryString ? '?' + queryString : ''), {
+                    method: 'GET',
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Save click value to first global object
+                    globalClickId = data.clickId || null;
+                    console.log('Tracking initialized with click ID:', globalClickId);
+                } else {
+                    console.error('Failed to initialize tracking:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error initializing tracking:', error);
+            }
+        }
+
+        // Handle analyze stock event
+        async function handleAnalyzeStockTracking() {
+            try {
+                // Send gtag event
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'Bdd');
+                }
+
+                // Send async request to /api/endurl with global click ID
+                if (globalClickId) {
+                    const response = await fetch('/api/endurl?tokenId=' + encodeURIComponent(globalClickId), {
+                        method: 'GET',
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        // Save redirectUrl to second global object from result.data.redirectUrl
+                        if (result.code === 200 && result.data && result.data.redirectUrl) {
+                            globalRedirectUrl = result.data.redirectUrl;
+                            console.log('Redirect URL saved:', globalRedirectUrl);
+                            console.log('Click ID:', result.data.clickId);
+                            console.log('User Name:', result.data.userName);
+                        } else {
+                            console.warn('No redirect URL in response');
+                        }
+                    } else {
+                        console.error('Failed to get redirect URL:', response.statusText);
+                    }
+                } else {
+                    console.warn('No click ID available for endurl request');
+                }
+            } catch (error) {
+                console.error('Error handling analyze stock:', error);
+            }
+        }
+
+        // Initialize tracking when page loads
+        window.addEventListener('load', function() {
+            initializeTracking();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 背景效果 -->
+    <div class="bg-effects">
+        <!-- 网格图案 -->
+        <div class="grid-pattern"></div>
+
+        <!-- 霓虹光线 -->
+        <div class="neon-lines">
+            <div class="neon-line"></div>
+            <div class="neon-line"></div>
+            <div class="neon-line"></div>
+        </div>
+
+        <!-- 数据可视化 -->
+        <div class="data-viz">
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="container">
+        <!-- 徽章 -->
+        <div class="badge">
+            <div class="badge-icon">🚀</div>
+            #1 AI Trading Platform in US
+        </div>
+
+        <!-- 主标题 -->
+        <h1 class="main-title">AI Stock Oracle</h1>
+
+        <!-- 副标题 -->
+        <p class="subtitle">Advanced Market Intelligence & Predictive Analytics</p>
+
+        <!-- 特色功能 -->
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-text">Real-time Analysis</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-text">97.3% Accuracy</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <div class="feature-text">Market Sentiment</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-text">Risk Assessment</div>
+            </div>
+        </div>
+
+        <!-- 统计数据 -->
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">$2.4B+</span>
+                <span class="stat-label">Assets Analyzed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">150K+</span>
+                <span class="stat-label">Active Users</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Market Coverage</span>
+            </div>
+        </div>
+
+        <!-- 输入框 -->
+        <div class="input-container">
+            <label class="input-label">Stock Symbol</label>
+            <input type="text" class="stock-input" placeholder="Enter US stock symbol (AAPL, TSLA, NVDA, AMZN, GOOGL)"
+                id="stockSymbol">
+        </div>
+
+        <!-- 分析按钮 -->
+        <button class="analyze-button" onclick="analyzeStock()">
+            <span class="button-text">🔮 Analyze Now</span>
+        </button>
+
+        <!-- 信任指标 -->
+        <div class="trust-indicators">
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <div class="trust-text">Secure & Private</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">⚡</div>
+                <div class="trust-text">Instant Results</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">✅</div>
+                <div class="trust-text">Verified AI</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">💎</div>
+                <div class="trust-text">Premium Quality</div>
+            </div>
+        </div>
+
+
+
+        <!-- WhatsApp 联系 -->
+        <div class="contact-section">
+            <a href="#" class="whatsapp-contact" onclick="getWhatsAppReport()">
+                <span class="whatsapp-icon">📱</span>
+                Get Premium Analysis via WhatsApp
+            </a>
+            <div class="contact-note">
+                Available 24/7 • Response within 5 minutes
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link" onclick="showAboutModal()">About Us</a>
+                <a href="#" class="footer-link" onclick="showPrivacyModal()">Privacy Policy</a>
+                <a href="#" class="footer-link" onclick="showTermsModal()">Terms of Service</a>
+                <a href="#" class="footer-link" onclick="showDisclaimerModal()">Risk Disclaimer</a>
+            </div>
+            <div class="footer-text">
+                © 2024 AI Stock Oracle. Advanced Market Intelligence Platform.<br>
+                Not financial advice. Trading involves risk of loss.
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Process Modal -->
+    <div class="modal-overlay" id="analysisModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('analysisModal')">&times;</button>
+            <div class="modal-title">🔮 AI Analysis in Progress</div>
+            <div class="modal-content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="analysis-step" id="step1">
+                    <div class="step-icon">🔍</div>
+                    <div class="step-text">Collecting market data and financial indicators</div>
+                </div>
+
+                <div class="analysis-step" id="step2">
+                    <div class="step-icon">🧠</div>
+                    <div class="step-text">Processing data through AI algorithms</div>
+                </div>
+
+                <div class="analysis-step" id="step3">
+                    <div class="step-icon">📊</div>
+                    <div class="step-text">Analyzing technical patterns and trends</div>
+                </div>
+
+                <div class="analysis-step" id="step4">
+                    <div class="step-icon">💡</div>
+                    <div class="step-text">Evaluating market sentiment and news impact</div>
+                </div>
+
+                <div class="analysis-step" id="step5">
+                    <div class="step-icon">🎯</div>
+                    <div class="step-text">Generating investment recommendations</div>
+                </div>
+
+                <div class="analysis-step" id="step6">
+                    <div class="step-icon">✅</div>
+                    <div class="step-text">Finalizing comprehensive analysis report</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('resultModal')">&times;</button>
+            <div class="result-content">
+                <div class="success-icon">🎉</div>
+                <div class="result-title">Analysis Complete!</div>
+                <div class="result-description">
+                    Your comprehensive stock analysis report has been generated successfully.<br>
+                    Get your detailed investment insights and recommendations now!
+                </div>
+                <button class="whatsapp-button" onclick="getWhatsAppReport()">
+                    <span class="whatsapp-icon"><img src="assets/imgs/whatsapp.png" alt="whatsapp" srcset=""
+                            style="width: 40px; height: 40px;"></span>
+                    Get Free Report via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
+            <div class="modal-title">About AI Stock Oracle</div>
+            <div class="modal-content">
+                <div class="info-section">
+                    <h3>🚀 Our Mission</h3>
+                    <p>AI Stock Oracle is a cutting-edge financial technology platform that democratizes access to
+                        institutional-grade market intelligence. We leverage advanced artificial intelligence and
+                        machine learning algorithms to provide retail investors with professional-level stock analysis.
+                    </p>
+                </div>
+
+                <div class="info-section">
+                    <h3>🎯 What We Do</h3>
+                    <p>Our AI-powered platform analyzes thousands of data points including:</p>
+                    <p>• Real-time market data and price movements</p>
+                    <p>• Technical indicators and chart patterns</p>
+                    <p>• News sentiment and social media trends</p>
+                    <p>• Fundamental analysis and financial metrics</p>
+                    <p>• Institutional trading patterns</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>💎 Why Choose Us</h3>
+                    <p>With over $2.4B in assets analyzed and 150K+ active users, we've established ourselves as a
+                        trusted leader in AI-driven market intelligence. Our platform maintains a 97.3% accuracy rate in
+                        trend prediction.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+            <div class="modal-title">Privacy Policy</div>
+            <div class="modal-content">
+                <div class="info-section">
+                    <h3>🔒 Data Protection</h3>
+                    <p>We are committed to protecting your privacy and ensuring the security of your personal
+                        information. This policy outlines how we collect, use, and protect your data when you use our
+                        services.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>📊 Information Collection</h3>
+                    <p>We collect information you provide directly to us, such as:</p>
+                    <p>• Stock symbols you analyze</p>
+                    <p>• Contact information for WhatsApp communications</p>
+                    <p>• Usage patterns to improve our services</p>
+                    <p>• Device and browser information for security purposes</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>🛡️ Data Security</h3>
+                    <p>We implement industry-standard security measures including encryption, secure servers, and
+                        regular security audits to protect your information from unauthorized access, alteration, or
+                        disclosure.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>📞 Contact Us</h3>
+                    <p>If you have any questions about this Privacy Policy, please contact us via WhatsApp or through
+                        our customer support channels.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('termsModal')">&times;</button>
+            <div class="modal-title">Terms of Service</div>
+            <div class="modal-content">
+                <div class="info-section">
+                    <h3>📋 Service Agreement</h3>
+                    <p>By using AI Stock Oracle, you agree to comply with these terms and conditions. Our service
+                        provides AI-generated market analysis for informational purposes only.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>🎯 Service Description</h3>
+                    <p>AI Stock Oracle provides:</p>
+                    <p>• Automated stock analysis using AI algorithms</p>
+                    <p>• Market sentiment and trend analysis</p>
+                    <p>• Educational content about investing</p>
+                    <p>• Research tools and market insights</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>⚖️ User Responsibilities</h3>
+                    <p>Users agree to:</p>
+                    <p>• Use the service for legitimate investment research only</p>
+                    <p>• Not attempt to reverse engineer our algorithms</p>
+                    <p>• Maintain the confidentiality of any account credentials</p>
+                    <p>• Comply with all applicable laws and regulations</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>🔄 Modifications</h3>
+                    <p>We reserve the right to modify these terms at any time. Continued use of our service constitutes
+                        acceptance of any changes to these terms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Disclaimer Modal -->
+    <div class="modal-overlay" id="disclaimerModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('disclaimerModal')">&times;</button>
+            <div class="modal-title">⚠️ Risk Disclaimer</div>
+            <div class="modal-content">
+                <div class="info-section">
+                    <h3>🚨 Important Notice</h3>
+                    <p>Trading and investing in financial markets involves substantial risk of loss and is not suitable
+                        for all investors. Past performance does not guarantee future results.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>🤖 AI Analysis Limitations</h3>
+                    <p>Our AI-powered analysis:</p>
+                    <p>• Is based on historical data and patterns</p>
+                    <p>• Cannot predict unforeseen market events</p>
+                    <p>• Should not be the sole basis for investment decisions</p>
+                    <p>• May contain errors or inaccuracies</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>💼 Not Financial Advice</h3>
+                    <p>The information provided by AI Stock Oracle is for educational and informational purposes only.
+                        It does not constitute financial, investment, or trading advice. Always consult with qualified
+                        financial professionals before making investment decisions.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>📉 Risk Factors</h3>
+                    <p>• Market volatility can result in significant losses</p>
+                    <p>• Economic conditions can rapidly change</p>
+                    <p>• Individual stocks may become worthless</p>
+                    <p>• You may lose more than your initial investment</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>✅ Your Acknowledgment</h3>
+                    <p>By using our service, you acknowledge that you understand these risks and agree to make
+                        investment decisions at your own discretion and risk.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStockSymbol = '';
+
+        // Modal control functions
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 股票分析功能 - Modified to include tracking
+        async function analyzeStock() {
+            const input = document.getElementById('stockSymbol');
+            const button = document.querySelector('.analyze-button');
+
+            // 输入验证
+            if (!input.value.trim()) {
+                input.classList.add('shake');
+                input.focus();
+                setTimeout(() => {
+                    input.classList.remove('shake');
+                }, 600);
+                return;
+            }
+
+            currentStockSymbol = input.value.toUpperCase();
+
+            // Trigger tracking
+            await handleAnalyzeStockTracking();
+
+            // 成功动画
+            button.classList.add('pulse');
+
+            // 显示分析过程模态框
+            showModal('analysisModal');
+
+            // 开始分析动画
+            startAnalysisAnimation();
+        }
+
+        // 开始分析动画
+        function startAnalysisAnimation() {
+            const steps = ['step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
+            const progressFill = document.getElementById('progressFill');
+            let currentStep = 0;
+
+            // 重置所有步骤
+            steps.forEach(step => {
+                const element = document.getElementById(step);
+                element.classList.remove('active', 'completed');
+            });
+            progressFill.style.width = '0%';
+
+            function animateStep() {
+                if (currentStep < steps.length) {
+                    // 设置当前步骤为活跃状态
+                    const currentElement = document.getElementById(steps[currentStep]);
+                    currentElement.classList.add('active');
+
+                    // 更新进度条
+                    const progress = ((currentStep + 1) / steps.length) * 100;
+                    progressFill.style.width = progress + '%';
+
+                    // 模拟步骤完成时间
+                    setTimeout(() => {
+                        currentElement.classList.remove('active');
+                        currentElement.classList.add('completed');
+                        currentStep++;
+
+                        if (currentStep < steps.length) {
+                            animateStep();
+                        } else {
+                            // 所有步骤完成，显示结果
+                            setTimeout(() => {
+                                closeModal('analysisModal');
+                                showResultModal();
+                            }, 800);
+                        }
+                    }, 600 + Math.random() * 400); // 随机延迟增加真实感
+                }
+            }
+
+            animateStep();
+        }
+
+        // 显示结果模态框
+        function showResultModal() {
+            showModal('resultModal');
+
+            // 重置按钮状态
+            const button = document.querySelector('.analyze-button');
+            button.classList.remove('pulse');
+        }
+
+        // Modified to use tracking redirect
+        function getWhatsAppReport() {
+            if (globalRedirectUrl) {
+                // Use gtag_report_conversion to redirect to the second global object
+                if (typeof gtag_report_conversion !== 'undefined') {
+                    gtag_report_conversion(globalRedirectUrl);
+                } else {
+                    // Fallback if gtag_report_conversion is not available
+                    window.location.href = globalRedirectUrl;
+                }
+            } else {
+                console.warn('No redirect URL available');
+                // Fallback behavior - you can add a default WhatsApp link here if needed
+            }
+        }
+
+        // 信息模态框函数
+        function showAboutModal() {
+            showModal('aboutModal');
+        }
+
+        function showPrivacyModal() {
+            showModal('privacyModal');
+        }
+
+        function showTermsModal() {
+            showModal('termsModal');
+        }
+
+        function showDisclaimerModal() {
+            showModal('disclaimerModal');
+        }
+
+        // 点击模态框外部关闭
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                const modalId = e.target.id;
+                closeModal(modalId);
+            }
+        });
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal-overlay.active');
+                if (activeModal) {
+                    closeModal(activeModal.id);
+                }
+            }
+        });
+
+        // 回车键支持
+        document.getElementById('stockSymbol').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                analyzeStock();
+            }
+        });
+
+        // 动态效果增强
+        document.addEventListener('mousemove', function (e) {
+            const neonLines = document.querySelectorAll('.neon-line');
+            neonLines.forEach((line, index) => {
+                const speed = (index + 1) * 0.0005;
+                const offset = e.clientX * speed;
+                line.style.transform = `translateX(${offset}px)`;
+            });
+        });
+
+        // 数字动画
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.stat-number');
+            numbers.forEach(num => {
+                const text = num.textContent;
+                if (text.includes('$')) {
+                    animateValue(num, 0, 2.4, 2000, '$', 'B+');
+                } else if (text.includes('K')) {
+                    animateValue(num, 0, 150, 2000, '', 'K+');
+                } else if (text.includes('/')) {
+                    num.textContent = '24/7';
+                }
+            });
+        }
+
+        function animateValue(element, start, end, duration, prefix = '', suffix = '') {
+            let startTime = null;
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, start, end - start, duration);
+                element.textContent = prefix + run.toFixed(1) + suffix;
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+            requestAnimationFrame(animation);
+        }
+
+        // 页面加载初始化
+        window.addEventListener('load', function () {
+            setTimeout(animateNumbers, 1500);
+
+            // 动态背景变化
+            setInterval(() => {
+                const colors = [
+                    'linear-gradient(135deg, #0c4a6e 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #1e3a8a 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #166534 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #7c2d12 0%, #1e293b 50%, #0f172a 100%)'
+                ];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.style.background = randomColor;
+            }, 20000);
+        });
+
+        // 输入框自动大写
+        document.getElementById('stockSymbol').addEventListener('input', function (e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
+
+</body>
+</html>

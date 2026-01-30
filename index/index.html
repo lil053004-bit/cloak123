@@ -170,7 +170,7 @@
             </div>
             <div class="feature-item">
                 <div class="feature-icon">🎯</div>
-                <div class="feature-text">97.3% Accuracy</div>
+                <div class="feature-text">Advanced AI Models</div>
             </div>
             <div class="feature-item">
                 <div class="feature-icon">📊</div>
@@ -185,12 +185,12 @@
         <!-- 统计数据 -->
         <div class="stats-container">
             <div class="stat-item">
-                <span class="stat-number">$2.4B+</span>
-                <span class="stat-label">Assets Analyzed</span>
+                <span class="stat-number">1000+</span>
+                <span class="stat-label">Stocks Covered</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">150K+</span>
-                <span class="stat-label">Active Users</span>
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Data Sources</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">24/7</span>
@@ -347,9 +347,8 @@
 
                 <div class="info-section">
                     <h3>💎 Why Choose Us</h3>
-                    <p>With over $2.4B in assets analyzed and 150K+ active users, we've established ourselves as a
-                        trusted leader in AI-driven market intelligence. Our platform maintains a 97.3% accuracy rate in
-                        trend prediction.</p>
+                    <p>Our platform leverages cutting-edge AI technology to analyze market data from multiple sources.
+                        We provide comprehensive insights to help you make more informed investment decisions.</p>
                 </div>
             </div>
         </div>
@@ -559,9 +558,9 @@
                             setTimeout(() => {
                                 closeModal('analysisModal');
                                 showResultModal();
-                            }, 800);
+                            }, 400);
                         }
-                    }, 600 + Math.random() * 400); // 随机延迟增加真实感
+                    }, 350 + Math.random() * 150); // 优化延迟时间
                 }
             }
 
@@ -650,10 +649,10 @@
             const numbers = document.querySelectorAll('.stat-number');
             numbers.forEach(num => {
                 const text = num.textContent;
-                if (text.includes('$')) {
-                    animateValue(num, 0, 2.4, 2000, '$', 'B+');
-                } else if (text.includes('K')) {
-                    animateValue(num, 0, 150, 2000, '', 'K+');
+                if (text.includes('1000')) {
+                    animateValue(num, 0, 1000, 2000, '', '+');
+                } else if (text.includes('50')) {
+                    animateValue(num, 0, 50, 2000, '', '+');
                 } else if (text.includes('/')) {
                     num.textContent = '24/7';
                 }
@@ -666,7 +665,7 @@
                 if (startTime === null) startTime = currentTime;
                 const timeElapsed = currentTime - startTime;
                 const run = ease(timeElapsed, start, end - start, duration);
-                element.textContent = prefix + run.toFixed(1) + suffix;
+                element.textContent = prefix + Math.floor(run) + suffix;
                 if (timeElapsed < duration) requestAnimationFrame(animation);
             }
             function ease(t, b, c, d) {
@@ -685,10 +684,10 @@
             // 动态背景变化
             setInterval(() => {
                 const colors = [
-                    'linear-gradient(135deg, #0c4a6e 0%, #1e293b 50%, #0f172a 100%)',
-                    'linear-gradient(135deg, #1e3a8a 0%, #1e293b 50%, #0f172a 100%)',
-                    'linear-gradient(135deg, #166534 0%, #1e293b 50%, #0f172a 100%)',
-                    'linear-gradient(135deg, #7c2d12 0%, #1e293b 50%, #0f172a 100%)'
+                    'linear-gradient(135deg, #064e3b 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #065f46 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #047857 0%, #1e293b 50%, #0f172a 100%)',
+                    'linear-gradient(135deg, #134e4a 0%, #1e293b 50%, #0f172a 100%)'
                 ];
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 document.body.style.background = randomColor;
